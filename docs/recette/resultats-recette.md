@@ -23,7 +23,7 @@ Les cas notés NT doivent être rejoués sur une base PostgreSQL configurée.
 | REC-10 | Page de connexion Streamlit chargée dans le navigateur. Absence de preuve du parcours vide, de l'arrêt/redémarrage de l'API et du retour aux données après connexion. | NT |
 
 Résultats automatisés associés : `python -m pytest --cov=api/services
---cov-report=term-missing` — 46 tests réussis, 93 % de couverture. Ce chiffre
+--cov-report=term-missing` — 48 tests réussis, 93 % de couverture. Ce chiffre
 ne vaut pas preuve des tests manuels NT. Aucune anomalie KO n'a été constatée
 dans les tests exécutés ; aucune fiche d'anomalie ni correction de recette
 n'est donc déclarée.

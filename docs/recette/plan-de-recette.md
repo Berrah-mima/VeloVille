@@ -7,8 +7,8 @@ votre application, dans l'ordre, à partir d'un état connu. Les colonnes
 
 ## Conditions d'exécution
 
-- Base `veloville` créée avec `sql/schema.sql`, comptes créés avec
-  `scripts/init_db.py`, import exécuté une fois avec `scripts/importer.py`.
+- Base `veloville` créée avec `sql/schema.sql`, comptes chargés avec
+  `sql/comptes.sql`, import exécuté une fois avec `scripts/importer.py`.
 - API démarrée : `uvicorn api.main:app --port 8000`.
 - Front démarré : `streamlit run front/app.py`.
 - Les appels HTTP sont faits avec `curl`, `httpx` ou le client interactif de
