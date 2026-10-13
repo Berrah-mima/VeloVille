@@ -117,15 +117,7 @@ def _importer_fichier(
         existant = db.get(modele, donnees[id_colonne])
         if existant is not None:
             if _equivalent_existant(existant, donnees):
-                compteurs["doublons"] += 1
-                _journaliser(
-                    nom_fichier,
-                    identifiant,
-                    id_colonne,
-                    identifiant,
-                    "identifiant déjà présent avec les mêmes données",
-                    "doublon écarté",
-                )
+                compteurs["importees"] += 1
             else:
                 compteurs["rejetees"] += 1
                 _journaliser(

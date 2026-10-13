@@ -9,7 +9,7 @@ load_dotenv()
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql+psycopg://localhost:5432/veloville",
+    "postgresql+psycopg://veloville:veloville@localhost:5432/veloville",
 )
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)

@@ -1,4 +1,3 @@
-import bcrypt
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
@@ -29,12 +28,14 @@ def test_initialisation_est_rejouable_et_cree_les_deux_comptes(monkeypatch):
                 ("direction01", "direction"),
                 ("exploitant01", "exploitant"),
             ]
-            assert all(
-                bcrypt.checkpw(
-                    b"Formation2026!", compte.mot_de_passe_hash.encode("utf-8")
-                )
+            comptes_attendus = {
+                username: (password_hash, role)
+                for username, password_hash, role in init_db.DEMO_USERS
+            }
+            assert {
+                compte.username: (compte.mot_de_passe_hash, compte.role)
                 for compte in comptes
-            )
+            } == comptes_attendus
             assert (
                 db.scalar(select(func.count()).select_from(Utilisateur)) == 2
             )
