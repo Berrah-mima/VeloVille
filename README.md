@@ -59,7 +59,7 @@ dans le sujet.
 python -m pytest --cov=api/services --cov-report=term-missing
 ```
 
-Résultat mesuré dans cet environnement : **46 tests réussis** et **93 % de
+Résultat mesuré dans cet environnement : **48 tests réussis** et **93 % de
 couverture** sur `api/services`. Les tests d'intégration utilisent
 `TestClient` et une base SQLite éphémère isolée ; ils ne remplacent pas le
 rejeu de recette sur PostgreSQL et les CSV complets.

@@ -27,3 +27,18 @@ Format recommandé : une section par version, les changements regroupés en
 
 ### Corrigé
 - Les incohérences des exports sont normalisées ou rejetées selon les règles RG1 à RG8.
+
+## [1.0.1] - 2026-10-13
+
+### Ajouté
+- Mode `--audit-seul` pour générer le journal et vérifier les volumes CSV sans connexion PostgreSQL.
+- Couverture des branches métier incident, de l'audit CSV, du script d'initialisation et du parsing de connexion sauvegarde.
+
+### Modifié
+- Transitions de statut déplacées dans `api/services/incidents.py`.
+- Ports par défaut alignés sur le contrat (API 8000), avec surcharge documentée en cas de conflit local.
+- Résultats de recette clarifiés pour distinguer les cas automatisés des contrôles PostgreSQL/front non exécutés.
+
+### Corrigé
+- Script de sauvegarde Bash validé par `bash -n` et lecture des identifiants libpq à partir de `DATABASE_URL`.
+- Restauration du livrable contractuel `sql/comptes.sql` ; `.env` et `.venv` vérifiés comme exclus de Git.
