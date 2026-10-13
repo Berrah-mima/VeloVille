@@ -8,7 +8,10 @@ from api.database import get_db
 from api.models import Incident, Utilisateur
 from api.schemas import ChangementStatut, IncidentLecture, Pagee
 from api.securite import exiger_role, utilisateur_courant
-from api.services.incidents import changer_statut_incident, lister_incidents
+from api.services.incidents import (
+    changer_statut_incident,
+    lister_incidents as service_lister_incidents,
+)
 
 router = APIRouter(prefix="/incidents", tags=["incidents"])
 
@@ -21,7 +24,7 @@ def lister_incidents(
     db: Session = Depends(get_db),
     _: Utilisateur = Depends(utilisateur_courant),
 ) -> dict[str, object]:
-    total, resultats = lister_incidents(db, statut, page, taille_page)
+    total, resultats = service_lister_incidents(db, statut, page, taille_page)
     return {"total": total, "page": page, "taille_page": taille_page, "resultats": resultats}
 
 

@@ -12,16 +12,18 @@ from front.ui import garder_session
 
 st.title("Indicateurs")
 if garder_session():
-    col_debut, col_fin, col_limite = st.columns(3)
-    date_debut = col_debut.date_input(
-        "Date de début", value=date(2026, 8, 24), key="date_debut"
-    )
-    date_fin = col_fin.date_input(
-        "Date de fin", value=date(2026, 8, 30), key="date_fin"
-    )
-    limite = col_limite.number_input(
-        "Nombre de stations", min_value=1, max_value=50, value=10
-    )
+    with st.form("formulaire_indicateurs"):
+        col_debut, col_fin, col_limite = st.columns(3)
+        date_debut = col_debut.date_input(
+            "Date de début", value=date(2026, 8, 24), key="date_debut"
+        )
+        date_fin = col_fin.date_input(
+            "Date de fin", value=date(2026, 8, 30), key="date_fin"
+        )
+        limite = col_limite.number_input(
+            "Nombre de stations", min_value=1, max_value=50, value=10
+        )
+        st.form_submit_button("Actualiser")
     if date_debut > date_fin:
         st.error("La date de début doit précéder la date de fin.")
     else:
@@ -54,28 +56,35 @@ if garder_session():
             else:
                 st.info("Aucun résultat pour ces critères.")
             st.subheader("Stations les plus actives")
-            st.dataframe(
-                [
-                    {
-                        "Identifiant": ligne["station_id"],
-                        "Nom": ligne["nom"],
-                        "Départs": ligne["nb_departs"],
-                        "Arrivées": ligne["nb_arrivees"],
-                        "Total": ligne["nb_departs"] + ligne["nb_arrivees"],
-                    }
-                    for ligne in stations
-                ],
-                width="stretch",
-                hide_index=True,
-            )
+            if stations:
+                st.dataframe(
+                    [
+                        {
+                            "Identifiant": ligne["station_id"],
+                            "Nom": ligne["nom"],
+                            "Départs": ligne["nb_departs"],
+                            "Arrivées": ligne["nb_arrivees"],
+                            "Total": ligne["nb_departs"] + ligne["nb_arrivees"],
+                        }
+                        for ligne in stations
+                    ],
+                    width="stretch",
+                    hide_index=True,
+                )
+            else:
+                st.info("Aucune station active pour ces critères.")
             st.subheader("Incidents par statut")
-            st.dataframe(
-                [
-                    {"Statut": ligne["statut"], "Nombre d'incidents": ligne["nb_incidents"]}
-                    for ligne in incidents["donnees"]
-                ],
-                width="stretch",
-                hide_index=True,
-            )
+            incidents_statut = incidents["donnees"]
+            if incidents_statut:
+                st.dataframe(
+                    [
+                        {"Statut": ligne["statut"], "Nombre d'incidents": ligne["nb_incidents"]}
+                        for ligne in incidents_statut
+                    ],
+                    width="stretch",
+                    hide_index=True,
+                )
+            else:
+                st.info("Aucun incident à afficher.")
         except ErreurApi as erreur:
             st.error(str(erreur))

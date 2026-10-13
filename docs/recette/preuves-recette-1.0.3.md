@@ -1,4 +1,4 @@
-# Preuves de recette — VéloVille 1.0.2
+# Preuves de recette — VéloVille 1.0.3
 
 Campagne locale du 13/10/2026. Les commandes ont utilisé la configuration
 PostgreSQL locale de `.env`. Aucun identifiant ni jeton n'est conservé ici.
@@ -36,6 +36,8 @@ Requêtes exécutées avec FastAPI `TestClient` connecté à la base PostgreSQL 
 - Pagination stations : page 1 `50/120`, page 3 `20`; Lille `46`;
   `page=0` et `taille_page=101` : `422`.
 - Station `S001` : `200`, nom `Lille - Gare`; station `S999` : `404`.
+- `GET /incidents?page=1&taille_page=1` : `200`, total et page conformes ;
+  le test dédié confirme que la route délègue au service sans récursion.
 
 ## REC-09 — Indicateur comparé au SQL
 
@@ -62,6 +64,8 @@ Interface Streamlit ouverte dans le navigateur sur la base chargée :
 - API arrêtée : Stations et Indicateurs affichent
   « L'API est injoignable. Vérifiez qu'elle est démarrée. », sans traceback.
 - API redémarrée : le tableau Stations se recharge avec les données.
+- La page Indicateurs affiche le bouton **Actualiser**, trois messages d'état
+  vide distincts et les erreurs 404/422 traduites en français.
 
 ## Tests automatisés
 
@@ -69,4 +73,4 @@ Interface Streamlit ouverte dans le navigateur sur la base chargée :
 python -m pytest --cov=api/services --cov-report=term-missing
 ```
 
-Résultat : `51 passed`, couverture des services `92 %`.
+Résultat : `57 passed`, couverture des services `93 %`.

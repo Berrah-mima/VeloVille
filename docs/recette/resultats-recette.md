@@ -2,7 +2,7 @@
 
 ## Relevé d'exécution
 
-Campagne d'entraînement du 13/10/2026, version 1.0.2. Environnement :
+Campagne d'entraînement du 13/10/2026, version 1.0.3. Environnement :
 Python 3.14.7, PostgreSQL configuré depuis `.env`, API FastAPI et interface
 Streamlit. Les tests automatisés utilisent également une base SQLite isolée ;
 les cas ci-dessous distinguent les vérifications réelles sur PostgreSQL des
@@ -22,7 +22,7 @@ tests unitaires.
 | REC-10 | Parcours navigateur réel : connexion, page au-delà du dernier résultat (message d'état vide), API arrêtée (erreur française sans traceback sur Stations et Indicateurs), API redémarrée (tableau de stations de nouveau affiché). | OK |
 
 Résultats automatisés associés : `python -m pytest --cov=api/services
---cov-report=term-missing` — 51 tests réussis, 92 % de couverture. Ce chiffre
+--cov-report=term-missing` — 57 tests réussis, 93 % de couverture. Ce chiffre
 complète les vérifications PostgreSQL et navigateur ci-dessus. Aucune anomalie
 KO n'a été constatée ; aucune fiche d'anomalie n'est donc ouverte.
 
@@ -44,24 +44,21 @@ PostgreSQL et l'interface locale.
 4. En V2, évaluer l'intégration météo et les fonctions d'anticipation
    reportées, sans introduire de rafraîchissement temps réel inutile.
 
-## Procès-verbal de recette — VéloVille V1 1.0.2
+## Procès-verbal de recette — VéloVille V1 1.0.3
 
 ### 1. Identification
 
-Application VéloVille V1 ; version 1.0.2 ; campagne d'entraînement du
-13/10/2026 ; Python 3.14.7, FastAPI TestClient, SQLite en mémoire.
-PostgreSQL non authentifié ; Streamlit lancé, mais parcours métier incomplet.
+Application VéloVille V1 ; version 1.0.3 ; campagne d'entraînement du
+13/10/2026 ; Python 3.14.7, PostgreSQL, FastAPI et Streamlit.
 
 ### 2. Périmètre recetté
 
-Les cas REC-03, REC-04, REC-05, REC-06 et REC-08 sont vérifiés
-automatiquement. REC-01, REC-02, REC-07, REC-09 et REC-10 restent à
-rejouer ou compléter en environnement cible.
+Les dix cas REC-01 à REC-10 ont été exécutés. Les tests automatisés
+complémentaires utilisent SQLite en mémoire.
 
 ### 3. Résultats de la campagne
 
-10 cas prévus, 5 vérifiés et 5 non testés ; 0 KO
-constaté ; 0 anomalie déclarée.
+10 cas prévus, 10 OK, 0 NT et 0 KO ; 0 anomalie déclarée.
 
 ### 4. Réserves bloquantes
 
@@ -75,8 +72,9 @@ copie dédiée pendant cette campagne ; elles restent à valider séparément.
 ### 6. Décision
 
 **PRONONCÉE POUR L'ENTRAÎNEMENT** — les dix cas du plan sont validés dans
-l'environnement local ; cette décision ne constitue pas une acceptation de
-mise en production.
+l'environnement local ; la restauration d'une sauvegarde doit encore être
+testée séparément. Cette décision ne constitue pas une acceptation de mise en
+production.
 
 ### 7. Signatures
 

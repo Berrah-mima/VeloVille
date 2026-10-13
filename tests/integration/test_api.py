@@ -90,6 +90,19 @@ def test_station_introuvable(client, jetons):
     assert reponse.json() == {"detail": "Station introuvable"}
 
 
+def test_lister_incidents_ne_rappelle_pas_le_routeur_recursivement(client, jetons):
+    entetes = {"Authorization": f"Bearer {jetons['direction01']}"}
+
+    reponse = client.get("/incidents?page=1&taille_page=1", headers=entetes)
+
+    assert reponse.status_code == 200
+    assert reponse.json()["total"] == 2
+    assert reponse.json()["page"] == 1
+    assert reponse.json()["taille_page"] == 1
+    assert len(reponse.json()["resultats"]) == 1
+    assert reponse.json()["resultats"][0]["incident_id"] == "I2026-0002"
+
+
 def test_indicateur_activite_coherent_avec_liste(client, jetons):
     entetes = {"Authorization": f"Bearer {jetons['direction01']}"}
     activite = client.get(

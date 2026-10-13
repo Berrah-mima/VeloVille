@@ -44,13 +44,37 @@ def _requete(
         raise ErreurApi("La réponse de l'API est illisible.", reponse.status_code) from erreur
     if not reponse.ok:
         detail = contenu.get("detail") if isinstance(contenu, dict) else None
-        messages = {
-            401: "Identifiant ou mot de passe incorrect." if chemin == "/auth/login" else "Votre session a expiré. Veuillez vous reconnecter.",
-            403: "Vous n'avez pas le droit de modifier un incident.",
-            404: "La ressource demandée est introuvable.",
-            422: "Les critères ou la transition demandés ne sont pas valides.",
-        }
-        raise ErreurApi(messages.get(reponse.status_code, str(detail or "Erreur de l'API.")), reponse.status_code)
+        if reponse.status_code == 401:
+            message = (
+                "Identifiant ou mot de passe incorrect."
+                if chemin == "/auth/login"
+                else "Votre session a expiré. Veuillez vous reconnecter."
+            )
+        elif reponse.status_code == 403:
+            message = "Vous n'avez pas le droit de modifier un incident."
+        elif reponse.status_code == 404:
+            if chemin.startswith("/stations/"):
+                message = "Station introuvable."
+            elif chemin.startswith("/incidents/"):
+                message = "Incident introuvable."
+            else:
+                message = "La ressource demandée est introuvable."
+        elif reponse.status_code == 422:
+            messages_422 = {
+                "date_debut doit précéder date_fin": (
+                    "La date de début doit précéder la date de fin."
+                ),
+                "Transition de statut non autorisee": (
+                    "Cette transition de statut n'est pas autorisée."
+                ),
+            }
+            message = messages_422.get(
+                detail if isinstance(detail, str) else "",
+                "Les critères ou la transition demandés ne sont pas valides.",
+            )
+        else:
+            message = str(detail or "Erreur de l'API.")
+        raise ErreurApi(message, reponse.status_code)
     return contenu
 
 

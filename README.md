@@ -65,7 +65,7 @@ dans le sujet.
 python -m pytest --cov=api/services --cov-report=term-missing
 ```
 
-Résultat mesuré dans cet environnement : **51 tests réussis** et **92 % de
+Résultat mesuré dans cet environnement : **57 tests réussis** et **93 % de
 couverture** sur `api/services`. Les tests d'intégration utilisent
 `TestClient` et une base SQLite éphémère isolée ; ils ne remplacent pas le
 rejeu de recette sur PostgreSQL et les CSV complets.
@@ -119,8 +119,8 @@ La lecture est permise aux rôles `exploitant` et `direction`; seul
   déploiement et restauration.
 - [`docs/recette/plan-de-recette.md`](docs/recette/plan-de-recette.md) et
   [`docs/recette/resultats-recette.md`](docs/recette/resultats-recette.md) :
-  plan et relevé honnête, avec les cas d'intégration PostgreSQL/front encore
-  indiqués NT et à exécuter sur l'environnement cible.
+  plan fourni et résultats des dix cas vérifiés en local avec PostgreSQL,
+  l'API et le parcours navigateur.
 - `scripts/sauvegarde.sh` produit une sauvegarde `pg_dump` horodatée au
   format custom ; les sauvegardes ne sont pas versionnées.
 
@@ -129,9 +129,9 @@ La lecture est permise aux rôles `exploitant` et `direction`; seul
 La V1 n'inclut ni données météo, ni prévision de rééquilibrage, ni état
 temps réel. La purge de conservation des trajets sur 13 mois et la
 planification automatique des sauvegardes sont à industrialiser. La
-campagne manuelle de recette sur PostgreSQL authentifié et le parcours
-complet du front restent à effectuer avant une mise en service. Si le port
+restauration d'une sauvegarde et la procédure opérationnelle de reprise
+restent à tester sur un environnement dédié avant mise en service. Si le port
 8000 est pris par un autre service local, définir `API_URL` dans `.env` sur
 le port alternatif utilisé par Uvicorn (8001 sur le poste de développement).
 
-Version : 1.0.2 — voir [`CHANGELOG.md`](CHANGELOG.md).
+Version : 1.0.3 — voir [`CHANGELOG.md`](CHANGELOG.md).
