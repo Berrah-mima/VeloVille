@@ -7,7 +7,6 @@ from front.api_client import (
     lire_activite,
     lire_incidents_par_statut,
     lire_stations_actives,
-    lire_trajets,
 )
 from front.ui import garder_session
 
@@ -25,7 +24,7 @@ if garder_session():
     )
     if date_debut > date_fin:
         st.error("La date de début doit précéder la date de fin.")
-    elif st.button("Actualiser") or not st.session_state.get("indicateurs_charges", False):
+    else:
         try:
             jeton = st.session_state["access_token"]
             debut, fin = date_debut.isoformat(), date_fin.isoformat()
@@ -33,8 +32,7 @@ if garder_session():
                 activite = lire_activite(jeton, debut, fin)["donnees"]
                 stations = lire_stations_actives(jeton, int(limite))["donnees"]
                 incidents = lire_incidents_par_statut(jeton)
-                trajets = lire_trajets(jeton, debut, fin)["total"]
-            st.session_state["indicateurs_charges"] = True
+            trajets = sum(ligne["nb_trajets"] for ligne in activite)
             col_trajets, col_stations, col_delai = st.columns(3)
             col_trajets.metric("Trajets sur la période", trajets)
             col_stations.metric("Stations actives", len(stations))
@@ -50,7 +48,7 @@ if garder_session():
                         {"Jour": ligne["jour"], "Nombre de trajets": ligne["nb_trajets"]}
                         for ligne in activite
                     ],
-                    use_container_width=True,
+                    width="stretch",
                     hide_index=True,
                 )
             else:
@@ -67,7 +65,7 @@ if garder_session():
                     }
                     for ligne in stations
                 ],
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
             st.subheader("Incidents par statut")
@@ -76,7 +74,7 @@ if garder_session():
                     {"Statut": ligne["statut"], "Nombre d'incidents": ligne["nb_incidents"]}
                     for ligne in incidents["donnees"]
                 ],
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
         except ErreurApi as erreur:

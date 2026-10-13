@@ -21,9 +21,13 @@ Configurer `DATABASE_URL`, `JWT_SECRET` (secret aléatoire d'au moins
 Créer le rôle et la base PostgreSQL, puis initialiser et importer :
 
 ```sql
-CREATE ROLE veloville LOGIN PASSWORD '<mot-de-passe-local>';
+CREATE ROLE veloville LOGIN PASSWORD 'veloville';
 CREATE DATABASE veloville OWNER veloville;
 ```
+
+Ces identifiants correspondent à la configuration locale d'entraînement de
+`.env.example` ; remplace-les par un mot de passe robuste hors entraînement et
+mets alors `DATABASE_URL` à jour.
 
 ```powershell
 psql -U veloville -d veloville -f sql/schema.sql
@@ -31,7 +35,9 @@ psql -U veloville -d veloville -f sql/comptes.sql
 python scripts/importer.py
 ```
 
-`scripts/init_db.py` offre aussi une initialisation Python alternative.
+`sql/comptes.sql` initialise les deux comptes de démonstration conformément à
+la structure attendue. `scripts/init_db.py` permet aussi de créer les tables
+et les comptes par Python.
 Le journal `docs/journal_import.csv` est livré dans le dépôt et peut être
 régénéré sans accès à PostgreSQL avec
 `python scripts/importer.py --audit-seul`. Un import réel le régénère aussi.
@@ -59,7 +65,7 @@ dans le sujet.
 python -m pytest --cov=api/services --cov-report=term-missing
 ```
 
-Résultat mesuré dans cet environnement : **48 tests réussis** et **93 % de
+Résultat mesuré dans cet environnement : **51 tests réussis** et **92 % de
 couverture** sur `api/services`. Les tests d'intégration utilisent
 `TestClient` et une base SQLite éphémère isolée ; ils ne remplacent pas le
 rejeu de recette sur PostgreSQL et les CSV complets.
@@ -74,11 +80,13 @@ L'audit détaillé, les règles RG1 à RG8 et les volumes attendus figurent dans
   inconnues rejetées, durées non positives (9 lignes uniques rejetées; une
   ligne de durée invalide est également le second exemplaire d'un doublon),
   5 horodatages au format hétérogène (4 normalisés et importés, 1 sur une
-  ligne rejetée pour référence d'arrivée invalide). Volume attendu : 2 002 trajets.
+  ligne rejetée pour référence d'arrivée invalide), 6 `velo_id` et 1 186
+  pseudonymes `usager_ref` normalisés. Volume attendu : 2 002 trajets.
 - 180 incidents : 3 dates de résolution antérieures au signalement rejetées,
   125 statuts de forme hétérogène (124 normalisés sur les lignes importées,
-  1 sur une ligne rejetée) et 25 absences de technicien journalisées comme
-  avertissements non bloquants. Volume attendu : 177 incidents.
+  1 sur une ligne rejetée), 24 types d'incident normalisés et 25 absences de
+  technicien journalisées comme avertissements non bloquants. Volume attendu :
+  177 incidents.
 
 Le total de chaque fichier se répartit entre lignes importées, rejets et
 doublons écartés ; les avertissements annotent des lignes importées et ne
@@ -126,4 +134,4 @@ complet du front restent à effectuer avant une mise en service. Si le port
 8000 est pris par un autre service local, définir `API_URL` dans `.env` sur
 le port alternatif utilisé par Uvicorn (8001 sur le poste de développement).
 
-Version : 1.0.0 — voir [`CHANGELOG.md`](CHANGELOG.md).
+Version : 1.0.2 — voir [`CHANGELOG.md`](CHANGELOG.md).

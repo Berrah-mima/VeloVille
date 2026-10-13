@@ -1,3 +1,6 @@
+from tests.constantes import MOT_DE_PASSE_TEST
+
+
 def test_sante(client):
     reponse = client.get("/sante")
     assert reponse.status_code == 200
@@ -7,14 +10,14 @@ def test_sante(client):
 def test_connexion_reussie_et_refusee(client):
     valide = client.post(
         "/auth/login",
-        json={"username": "exploitant01", "password": "Formation2026!"},
+        json={"username": "exploitant01", "password": MOT_DE_PASSE_TEST},
     )
     mdp_invalide = client.post(
         "/auth/login",
         json={"username": "exploitant01", "password": "mauvais"},
     )
     utilisateur_inconnu = client.post(
-        "/auth/login", json={"username": "inconnu", "password": "Formation2026!"}
+        "/auth/login", json={"username": "inconnu", "password": MOT_DE_PASSE_TEST}
     )
     assert valide.status_code == 200
     assert valide.json()["role"] == "exploitant"

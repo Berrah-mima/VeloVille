@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from api.routers import auth, incidents, indicateurs, stations, trajets
 
-app = FastAPI(title="VéloVille", version="1.0.0")
+app = FastAPI(title="VéloVille", version="1.0.2")
 app.include_router(auth.router)
 app.include_router(stations.router)
 app.include_router(trajets.router)

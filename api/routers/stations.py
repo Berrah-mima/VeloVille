@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from api.database import get_db
 from api.models import Station, Utilisateur
 from api.schemas import Pagee, StationLecture
 from api.securite import utilisateur_courant
+from api.services.stations import lister_stations as service_lister_stations
+from api.services.stations import trouver_station
 
 router = APIRouter(prefix="/stations", tags=["stations"])
 
@@ -18,15 +19,7 @@ def lister_stations(
     db: Session = Depends(get_db),
     _: Utilisateur = Depends(utilisateur_courant),
 ) -> dict[str, object]:
-    filtres = [Station.commune == commune] if commune else []
-    total = db.scalar(select(func.count()).select_from(Station).where(*filtres)) or 0
-    resultats = db.scalars(
-        select(Station)
-        .where(*filtres)
-        .order_by(Station.station_id)
-        .offset((page - 1) * taille_page)
-        .limit(taille_page)
-    ).all()
+    total, resultats = service_lister_stations(db, commune, page, taille_page)
     return {"total": total, "page": page, "taille_page": taille_page, "resultats": resultats}
 
 
@@ -36,7 +29,7 @@ def lire_station(
     db: Session = Depends(get_db),
     _: Utilisateur = Depends(utilisateur_courant),
 ) -> Station:
-    station = db.get(Station, station_id)
+    station = trouver_station(db, station_id)
     if station is None:
         raise HTTPException(status_code=404, detail="Station introuvable")
     return station

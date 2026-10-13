@@ -13,6 +13,7 @@ from sqlalchemy.pool import StaticPool
 from api.database import get_db
 from api.main import app
 from api.models import Base, Incident, Station, Trajet, Utilisateur
+from tests.constantes import MOT_DE_PASSE_TEST
 
 engine_test = create_engine(
     "sqlite+pysqlite:///:memory:",
@@ -100,7 +101,7 @@ def db_session():
             ),
         ]
     )
-    hash_mdp = bcrypt.hashpw(b"Formation2026!", bcrypt.gensalt()).decode()
+    hash_mdp = bcrypt.hashpw(MOT_DE_PASSE_TEST.encode(), bcrypt.gensalt()).decode()
     db.add_all(
         [
             Utilisateur(username="exploitant01", mot_de_passe_hash=hash_mdp, role="exploitant"),
@@ -134,7 +135,7 @@ def jetons(client: TestClient) -> dict[str, str]:
     for username in ("exploitant01", "direction01"):
         reponse = client.post(
             "/auth/login",
-            json={"username": username, "password": "Formation2026!"},
+            json={"username": username, "password": MOT_DE_PASSE_TEST},
         )
         assert reponse.status_code == 200
         resultats[username] = reponse.json()["access_token"]

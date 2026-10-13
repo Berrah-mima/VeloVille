@@ -22,12 +22,12 @@ Modifier `.env` et définir une URL PostgreSQL valide, un secret JWT aléatoire
 d'au moins 32 caractères et les paramètres front. Ne jamais partager ni
 commiter ce fichier.
 
-Créer le rôle et la base avec un compte PostgreSQL administrateur (le mot de
-passe est demandé par PostgreSQL et ne doit pas être inscrit dans l'historique
-Git) :
+Créer le rôle et la base avec un compte PostgreSQL administrateur. Les
+identifiants ci-dessous correspondent à l'environnement local d'entraînement ;
+remplacez le mot de passe et mettez à jour `DATABASE_URL` hors entraînement :
 
 ```sql
-CREATE ROLE veloville LOGIN PASSWORD '<mot-de-passe-local>';
+CREATE ROLE veloville LOGIN PASSWORD 'veloville';
 CREATE DATABASE veloville OWNER veloville;
 ```
 
@@ -39,8 +39,9 @@ psql -U veloville -d veloville -f sql/comptes.sql
 python scripts/importer.py
 ```
 
-`sql/comptes.sql` insère ou met à jour les deux comptes de démonstration.
-`scripts/init_db.py` est une alternative idempotente fondée sur les modèles.
+`sql/comptes.sql` initialise les deux comptes de démonstration et peut être
+relancé sans les dupliquer. `scripts/init_db.py` fournit également une
+initialisation idempotente par Python.
 Pour produire le journal d'audit hors base, lancer
 `python scripts/importer.py --audit-seul`.
 

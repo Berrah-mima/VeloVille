@@ -2,14 +2,13 @@ from datetime import datetime, timezone
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from api.database import get_db
 from api.models import Incident, Utilisateur
 from api.schemas import ChangementStatut, IncidentLecture, Pagee
 from api.securite import exiger_role, utilisateur_courant
-from api.services.incidents import appliquer_transition
+from api.services.incidents import changer_statut_incident, lister_incidents
 
 router = APIRouter(prefix="/incidents", tags=["incidents"])
 
@@ -22,15 +21,7 @@ def lister_incidents(
     db: Session = Depends(get_db),
     _: Utilisateur = Depends(utilisateur_courant),
 ) -> dict[str, object]:
-    filtres = [Incident.statut == statut] if statut else []
-    total = db.scalar(select(func.count()).select_from(Incident).where(*filtres)) or 0
-    resultats = db.scalars(
-        select(Incident)
-        .where(*filtres)
-        .order_by(Incident.date_signalement.desc(), Incident.incident_id.desc())
-        .offset((page - 1) * taille_page)
-        .limit(taille_page)
-    ).all()
+    total, resultats = lister_incidents(db, statut, page, taille_page)
     return {"total": total, "page": page, "taille_page": taille_page, "resultats": resultats}
 
 
@@ -41,17 +32,15 @@ def changer_statut(
     db: Session = Depends(get_db),
     _: Utilisateur = Depends(exiger_role("exploitant")),
 ) -> Incident:
-    incident = db.get(Incident, incident_id)
-    if incident is None:
-        raise HTTPException(status_code=404, detail="Incident introuvable")
     try:
-        appliquer_transition(
-            incident,
+        incident = changer_statut_incident(
+            db,
+            incident_id,
             payload.statut,
             datetime.now(timezone.utc).replace(tzinfo=None),
         )
     except ValueError as erreur:
         raise HTTPException(status_code=422, detail=str(erreur)) from erreur
-    db.commit()
-    db.refresh(incident)
+    if incident is None:
+        raise HTTPException(status_code=404, detail="Incident introuvable")
     return incident
