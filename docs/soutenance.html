@@ -53,7 +53,7 @@
     <div class="eyebrow">Épreuve E2 · entraînement</div>
     <h1>Vélo<span class="accent">Ville</span></h1>
     <p class="subtitle">Une plateforme pour fiabiliser et valoriser les données d'un service de vélos en libre-service.</p>
-    <div class="pill">API FastAPI · PostgreSQL · Interface Streamlit · Version 1.0.2</div>
+    <div class="pill">API FastAPI · PostgreSQL · Interface Streamlit · Version 1.0.3</div>
     <div style="position:absolute;right:100px;top:170px;width:300px;height:300px;border:3px solid #00a99d;border-radius:50%;opacity:.7"></div>
     <div style="position:absolute;right:170px;top:240px;width:160px;height:160px;border:3px solid #7ce0d5;border-radius:50%;opacity:.8"></div>
     <div class="footer"><span>Support de présentation</span><span>01 / 10</span></div>
@@ -161,7 +161,7 @@
       <div class="card"><h3>Incidents</h3><p>Répartition par statut et délai moyen de résolution.</p></div>
     </div>
     <p style="margin-top:28px">La page effectue exactement <b>trois appels API</b> ; le total de trajets est la somme des résultats quotidiens.</p>
-    <p class="small">Les tableaux sont paginés ou limités, sans graphique ni rafraîchissement automatique.</p>
+    <p class="small">Filtres appliqués avec Actualiser ; états vides explicites, sans graphique ni rafraîchissement automatique.</p>
     <div class="footer"><span>Streamlit · affichage tabulaire</span><span>08 / 10</span></div>
   </section>
 
@@ -169,11 +169,11 @@
     <div class="eyebrow">08 · Vérification</div>
     <h2>Tests automatisés et état de recette</h2>
     <div class="grid three">
-      <div class="card"><div class="metric">51</div><h3>Tests réussis</h3><p>Tests unitaires, import rejoué et tests API/front.</p></div>
-      <div class="card"><div class="metric">92 %</div><h3>Couverture services</h3><p>Mesurée par pytest-cov sur les services.</p></div>
-      <div class="card"><div class="metric">5 / 5</div><h3>Cas automatisés OK</h3><p>Authentification, rôles, pagination et station.</p></div>
+      <div class="card"><div class="metric">57</div><h3>Tests réussis</h3><p>Tests unitaires, import rejoué et tests API/front.</p></div>
+      <div class="card"><div class="metric">93 %</div><h3>Couverture services</h3><p>Mesurée par pytest-cov sur les services.</p></div>
+      <div class="card"><div class="metric">10 / 10</div><h3>Cas de recette OK</h3><p>API, imports PostgreSQL, indicateurs et parcours front vérifiés.</p></div>
     </div>
-    <div class="note">REC-01, 02, 07, 09 et 10 restent NT sur l'environnement cible : PostgreSQL et le parcours complet du navigateur doivent encore être rejoués.</div>
+    <div class="note">La restauration d'une sauvegarde reste à valider séparément sur un environnement dédié.</div>
     <div class="footer"><span>Résultats détaillés : docs/recette/resultats-recette.md</span><span>09 / 10</span></div>
   </section>
 
@@ -187,11 +187,11 @@
       </div>
       <div class="card">
         <h3>Prochaines actions</h3>
-        <ul><li>Configurer et valider la base PostgreSQL de recette</li><li>Exécuter REC-01, REC-02 et les comptages complets</li><li>Parcourir le front avec l'API disponible puis indisponible</li><li>Conserver les preuves et finaliser le dépôt</li></ul>
+        <ul><li>Automatiser les sauvegardes et surveiller leur résultat</li><li>Tester pg_restore sur une base dédiée</li><li>Formaliser la reprise après incident</li><li>Conserver les preuves et faire évoluer la plateforme</li></ul>
       </div>
     </div>
     <p style="font-size:27px;font-weight:700;margin-top:32px">Merci — questions ?</p>
-    <div class="footer"><span>VéloVille · Entraînement E2 · 1.0.2</span><span>10 / 10</span></div>
+    <div class="footer"><span>VéloVille · Entraînement E2 · 1.0.3</span><span>10 / 10</span></div>
   </section>
 </body>
 </html>

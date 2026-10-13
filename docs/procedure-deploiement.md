@@ -86,9 +86,22 @@ pg_restore --list sauvegardes/veloville_AAAAMMJJ_HHMMSS.dump
 Pour restaurer le format custom dans une base déjà créée :
 
 ```bash
+mapfile -t PG_SETTINGS < <(python scripts/postgres_settings.py)
+export PGHOST="${PG_SETTINGS[0]}"
+export PGPORT="${PG_SETTINGS[1]}"
+export PGDATABASE="${PG_SETTINGS[2]}"
+export PGUSER="${PG_SETTINGS[3]}"
+export PGPASSWORD="${PG_SETTINGS[4]}"
+unset PG_SETTINGS
 pg_restore --clean --if-exists --no-owner \
-  --dbname="$DATABASE_URL" sauvegardes/veloville_AAAAMMJJ_HHMMSS.dump
+  --dbname="$PGDATABASE" sauvegardes/veloville_AAAAMMJJ_HHMMSS.dump
+unset PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD
 ```
+
+`pg_restore` utilise les variables libpq plutôt que `DATABASE_URL` : le
+préfixe SQLAlchemy `postgresql+psycopg://` n'est pas un schéma accepté comme
+chaîne de connexion par `pg_restore`. Le script Python charge `.env` et
+décompose l'URL sans l'inscrire dans l'historique du shell.
 
 Vérifier ensuite le schéma, les comptages et la réponse de `/sante`. Garder
 les sauvegardes hors du dépôt et appliquer la politique de conservation de

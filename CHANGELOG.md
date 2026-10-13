@@ -3,6 +3,23 @@
 Format recommandé : une section par version, les changements regroupés en
 « Ajouté », « Modifié », « Corrigé ».
 
+## [1.0.3] - 2026-10-13
+
+### Modifié
+- Les indicateurs disposent d'un bouton Actualiser et affichent un état vide
+  explicite pour chaque tableau.
+- Les messages API 404 et 422 sont adaptés en français pour les erreurs
+  usuelles de stations, incidents, dates et transitions.
+- La procédure de restauration utilise les variables libpq extraites de
+  `DATABASE_URL`, et `.gitattributes` normalise les fins de ligne.
+- README, résultats de recette et support de soutenance sont harmonisés sur
+  les 57 tests et les dix cas de recette validés.
+
+### Corrigé
+- La route `GET /incidents` délègue au service sous un alias explicite, évitant
+  l'appel récursif au routeur.
+- Ajout d'un test d'intégration dédié à la liste paginée des incidents.
+
 ## [1.0.2] - 2026-10-13
 
 ### Modifié
