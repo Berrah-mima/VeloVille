@@ -19,7 +19,9 @@ from api.models import Utilisateur
 
 
 # Swagger demandera simplement un Bearer token.
-bearer_scheme = HTTPBearer()
+# auto_error=False permet de gérer nous-mêmes l'absence de jeton
+# et de retourner 401 au lieu de 403.
+bearer_scheme = HTTPBearer(auto_error=False)
 
 
 def hash_password(plain_password: str) -> str:
@@ -83,12 +85,22 @@ def decode_access_token(token: str) -> dict:
 
 
 def utilisateur_courant(
-    credentials: HTTPAuthorizationCredentials = Depends(
+    credentials: HTTPAuthorizationCredentials | None = Depends(
         bearer_scheme
     ),
     db: Session = Depends(get_db),
 ) -> Utilisateur:
     """Retourne l'utilisateur correspondant au JWT."""
+
+    # Aucun jeton fourni
+    if credentials is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentification requise",
+            headers={
+                "WWW-Authenticate": "Bearer"
+            },
+        )
 
     erreur_authentification = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
