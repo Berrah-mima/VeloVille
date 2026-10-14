@@ -22,9 +22,11 @@ tests unitaires.
 | REC-10 | Parcours navigateur réel : connexion, page au-delà du dernier résultat (message d'état vide), API arrêtée (erreur française sans traceback sur Stations et Indicateurs), API redémarrée (tableau de stations de nouveau affiché). | OK |
 
 Résultats automatisés associés : `python -m pytest --cov=api/services
---cov-report=term-missing` — 57 tests réussis, 93 % de couverture. Ce chiffre
-complète les vérifications PostgreSQL et navigateur ci-dessus. Aucune anomalie
-KO n'a été constatée ; aucune fiche d'anomalie n'est donc ouverte.
+--cov-report=term-missing` — les tests ont été rejoués le 14/10/2026 sur la
+version 1.0.4 avec Python 3.12.10 : 57 tests réussis et 94 % de couverture sur
+`api/services`. Ce rejeu automatisé complète la campagne de recette manuelle
+1.0.3 réalisée le 13/10/2026 sur PostgreSQL et dans le navigateur. Aucune
+anomalie KO n'a été constatée ; aucune fiche d'anomalie n'est donc ouverte.
 
 ## Synthèse chiffrée
 
@@ -78,4 +80,4 @@ production.
 
 ### 7. Signatures
 
-Commanditaire : non applicable (entraînement) — Développeur : à compléter.
+Commanditaire : non applicable (entraînement) — Développeur : Halima Benichou.

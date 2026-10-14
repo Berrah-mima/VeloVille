@@ -41,8 +41,10 @@ et les comptes par Python.
 Le journal `docs/journal_import.csv` est livré dans le dépôt et peut être
 régénéré sans accès à PostgreSQL avec
 `python scripts/importer.py --audit-seul`. Un import réel le régénère aussi.
-Les fonctions de fiabilisation sont indépendantes de la base ; l'import
-applique les stations avant les trajets et les incidents et est rejouable.
+Les fonctions de fiabilisation sont indépendantes de la base. Les règles de
+gestion RG1 à RG8 sont séparées en fonctions pures dans
+`api/services/fiabilisation.py`. L'import applique les stations avant les
+trajets et les incidents et est rejouable.
 
 ## Lancer l'application
 
@@ -65,7 +67,7 @@ dans le sujet.
 python -m pytest --cov=api/services --cov-report=term-missing
 ```
 
-Résultat mesuré dans cet environnement : **57 tests réussis** et **93 % de
+Résultat mesuré dans cet environnement : **57 tests réussis** et **94 % de
 couverture** sur `api/services`. Les tests d'intégration utilisent
 `TestClient` et une base SQLite éphémère isolée ; ils ne remplacent pas le
 rejeu de recette sur PostgreSQL et les CSV complets.

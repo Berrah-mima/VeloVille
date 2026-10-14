@@ -3,6 +3,22 @@
 Format recommandé : une section par version, les changements regroupés en
 « Ajouté », « Modifié », « Corrigé ».
 
+
+## [1.0.4] - 2026-10-14
+
+### Modifié
+- Les règles de gestion RG1 à RG8 sont séparées en fonctions pures dans
+  `api/services/fiabilisation.py`.
+- Le README est mis à jour avec le résultat final :
+  57 tests réussis et 94 % de couverture sur `api/services`.
+
+### Corrigé
+- Une route protégée appelée sans jeton renvoie désormais 401 au lieu de 403,
+  conformément au contrat de sécurité.
+- La gestion de l'authentification distingue correctement un jeton absent ou
+  invalide (401) d'un rôle insuffisant (403).
+
+  
 ## [1.0.3] - 2026-10-13
 
 ### Modifié
