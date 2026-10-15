@@ -136,4 +136,4 @@ restent à tester sur un environnement dédié avant mise en service. Si le port
 8000 est pris par un autre service local, définir `API_URL` dans `.env` sur
 le port alternatif utilisé par Uvicorn (8001 sur le poste de développement).
 
-Version : 1.0.3 — voir [`CHANGELOG.md`](CHANGELOG.md).
+Version : 1.0.4 — voir [`CHANGELOG.md`](CHANGELOG.md).
