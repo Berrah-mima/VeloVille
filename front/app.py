@@ -1,4 +1,14 @@
+import sys
+from pathlib import Path
+
 import streamlit as st
+
+
+RACINE_PROJET = Path(__file__).resolve().parent.parent
+
+if str(RACINE_PROJET) not in sys.path:
+    sys.path.insert(0, str(RACINE_PROJET))
+
 
 from front.api_client import ErreurApi, se_connecter
 
